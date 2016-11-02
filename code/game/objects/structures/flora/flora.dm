@@ -1,3 +1,13 @@
+/obj/structure/flora
+	var/shovelaway = 1
+
+/obj/structure/flora/attackby(var/obj/item/weapon/W, var/mob/user)
+	if(shovelaway && istype(W, /obj/item/weapon/pickaxe/shovel))
+		to_chat(user,"you clear away \the [src]")
+		qdel(src)
+		return
+	..()
+
 //trees
 /obj/structure/flora/tree
 	name = "tree"
@@ -8,7 +18,7 @@
 	plane = ABOVE_HUMAN_PLANE
 	icon = 'icons/obj/flora/deadtrees.dmi'
 	icon_state = "tree_1"
-
+	shovelaway = 0
 	pixel_x = -WORLD_ICON_SIZE/2
 
 	var/health = 100
@@ -199,9 +209,11 @@
 //bushes
 /obj/structure/flora/bush
 	name = "bush"
+	desc = "It's amazing what can grow out here."
 	icon = 'icons/obj/flora/snowflora.dmi'
 	icon_state = "snowbush1"
 	anchored = 1
+
 
 /obj/structure/flora/bush/New()
 	..()
