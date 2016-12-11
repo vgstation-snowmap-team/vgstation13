@@ -498,8 +498,8 @@
 
 //BASKETBALL OBJECTS
 
-/obj/item/weapon/beach_ball/holoball
-	icon = 'icons/obj/basketball.dmi'
+/obj/item/toy/basketball/holoball
+	icon = 'icons/obj/toy.dmi'
 	icon_state = "basketball"
 	name = "basketball"
 	item_state = "basketball"
@@ -509,7 +509,7 @@
 /obj/structure/holohoop
 	name = "basketball hoop"
 	desc = "Boom, Shakalaka!."
-	icon = 'icons/obj/basketball.dmi'
+	icon = 'icons/obj/toy.dmi'
 	icon_state = "hoop"
 	anchored = 1
 	density = 1
