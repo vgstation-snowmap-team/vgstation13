@@ -358,8 +358,9 @@
 	//actually throw it!
 	if (item)
 		item.forceMove(get_turf(src))
-		src.visible_message("<span class='warning'>[src] has thrown [item].</span>", \
-			drugged_message = "<span class='warning'>[item] escapes from [src]'s grasp and flies away!</span>")
+		if(!(item.flags & NO_THROW_MSG))
+			src.visible_message("<span class='warning'>[src] has thrown [item].</span>", \
+				drugged_message = "<span class='warning'>[item] escapes from [src]'s grasp and flies away!</span>")
 
 		src.apply_inertia(get_dir(target, src))
 
@@ -567,8 +568,14 @@
 				return 1
 	return 0
 
-/mob/living/carbon/CheckSlip()
-	return !locked_to && !lying && !unslippable
+#define SLIPTYPE_DEFAULT 1
+#define SLIPTYPE_ICE 2
+/mob/living/carbon/CheckSlip(var/sliptype = SLIPTYPE_DEFAULT)
+	switch(sliptype)
+		if(SLIPTYPE_DEFAULT)
+			return !locked_to && !lying && !unslippable
+		if(SLIPTYPE_ICE)
+			return !locked_to && !unslippable
 
 /mob/living/carbon/proc/Slip(stun_amount, weaken_amount, slip_on_walking = 0)
 	if(!slip_on_walking && m_intent == "walk")

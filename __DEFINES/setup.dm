@@ -82,7 +82,7 @@ var/global/disable_vents     = 0
 #define BODYTEMP_AUTORECOVERY_DIVISOR 0.5 //This is the divisor which handles how much of the temperature difference between the current body temperature and 310.15K (optimal temperature) humans auto-regenerate each tick. The higher the number, the slower the recovery. This is applied each tick, so long as the mob is alive.
 #define BODYTEMP_AUTORECOVERY_MAXIMUM 2.0 //Maximum amount of kelvin moved toward 310.15K per tick. So long as abs(310.15 - bodytemp) is more than 0.5 .
 
-#define BODYTEMP_COLD_DIVISOR 100 //Similar to the BODYTEMP_AUTORECOVERY_DIVISOR, but this is the divisor which is applied at the stage that follows autorecovery. This is the divisor which comes into play when the human's loc temperature is lower than their body temperature. Make it lower to lose bodytemp faster.
+#define BODYTEMP_COLD_DIVISOR 200 //Similar to the BODYTEMP_AUTORECOVERY_DIVISOR, but this is the divisor which is applied at the stage that follows autorecovery. This is the divisor which comes into play when the human's loc temperature is lower than their body temperature. Make it lower to lose bodytemp faster.
 
 #define PRESSUREFACTOR_NO_LINEAR 1.5  // Where growth of the pressure factor stops being linear
 #define COLD_PRESSUREFACTOR_MAX (PRESSUREFACTOR_NO_LINEAR)/((-1/PRESSUREFACTOR_NO_LINEAR)+1)    // The highest that heat loss can be multiplied by due to pressure. Depends on where non linear starts.
@@ -117,7 +117,7 @@ var/global/disable_vents     = 0
 #define INS_ARMOUR_HEAT_CONDUCTIVITY 	0.2	//For heat insulated suits like hardsuits or jumpers.
 
 #define MASK_HEAT_CONDUCTIVITY			0.4	//For normal masks
-#define INS_MASK_HEAT_CONDUCTIVITY 		0.2	//For heat insulated masks such as a balaclavas, scarves & gas masks
+#define INS_MASK_HEAT_CONDUCTIVITY 		0.2	//For heat insulated masks such as a ski masks, scarves & gas masks
 
 #define JUMPSUIT_HEAT_CONDUCTIVITY		0.4 //For normal jumpsuits
 #define INS_JUMPSUIT_HEAT_CONDUCTIVITY	0.1 //For heat insulated jumpsuits, if such a thing is even possible.
@@ -131,6 +131,7 @@ var/global/disable_vents     = 0
 #define GLOVES_HEAT_CONDUCTIVITY		0.4	//For normal gloves.
 #define INS_GLOVES_HEAT_CONDUCTIVITY	0.2	//For some heat insulated gloves (black and yellow.)
 
+#define SNOWGEAR_HEAT_CONDUCTIVITY 		0.2	// for now
 #define SPACESUIT_HEAT_CONDUCTIVITY		0	// until a time where space is no longer cold
 
 // Doors!
@@ -262,40 +263,29 @@ var/MAX_EXPLOSION_RANGE = 14
 //FLAGS BITMASK
 
 //Item flags!
-#define PROXMOVE		1	//Will the code check us when we move or when something moves near us?
+#define PROXMOVE	1	// Will the code check us when we move or when something moves near us? Note that if the item doesn't have this flag, HasProximity() will never execute for it.
+#define FPRINT		2	// takes a fingerprint
+#define ON_BORDER	4	// item has priority to check when entering or leaving
+#define INVULNERABLE 8
+#define HEAR		16 // This flag is necessary to give an item (or mob) the ability to hear spoken messages! Mobs without a client still won't hear anything unless given HEAR_ALWAYS
+#define HEAR_ALWAYS 32 // Assign a virtualhearer to the mob even when no client is controlling it. (technically not an item flag, but related to the above)
 
-#define SLOWDOWN_WHEN_CARRIED 2 //Apply slowdown when carried in hands, instead of only when worn
+#define TWOHANDABLE	64
+#define MUSTTWOHAND	128
+#define SLOWDOWN_WHEN_CARRIED 256 //Apply slowdown when carried in hands, instead of only when worn
 
-#define NOBLUDGEON  4  // when an item has this it produces no "X has been hit by Y with Z" message with the default handler
+#define NOBLOODY	512	// used to items if they don't want to get a blood overlay
 
-#define MASKINTERNALS	8	// mask allows internals
-//#define SUITSPACE		8	// suit protects against space
+#define NO_ATTACK_MSG 	1024 // when an item has this it produces no "X has been hit by Y with Z" message with the default handler
+#define NO_THROW_MSG 	2048 // produce no "X has thrown Y" message when somebody throws this item
+#define NO_STORAGE_MSG 	4096 // produce no "X puts the Y into the backpack" message when somebody moves this item in their inventory
 
-#define TWOHANDABLE		32
-#define MUSTTWOHAND		64
-
-#define FPRINT		256		// takes a fingerprint
-#define ON_BORDER	512		// item has priority to check when entering or leaving
-#define NOBLOODY	2048	// used to items if they don't want to get a blood overlay
-#define HEAR		16
-#define HEAR_ALWAYS 32 // Assign a virtualhearer to the mob even when no client is controlling it.
-
-#define NOSLIP		1024 		//prevents from slipping on wet floors, in space etc
-
-#define OPENCONTAINER	4096	// is an open container for chemistry purposes
-
-#define BLOCK_GAS_SMOKE_EFFECT 8192	// blocks the effect that chemical clouds would have on a mob --glasses, mask and helmets ONLY! (NOTE: flag shared with ONESIZEFITSALL)
-#define ONESIZEFITSALL 8192
-#define PLASMAGUARD 16384			//Does not get contaminated by plasma.
-
-#define	NOREACT		16384 			//Reagents dont' react inside this container.
-
-#define BLOCK_BREATHING 32768		//When worn, prevents breathing!
-
-#define INVULNERABLE 128
+#define OPENCONTAINER	8192  // is an open container for chemistry purposes
+#define	NOREACT 		16384 // Reagents don't react inside this container.
 
 #define ALL ~0
 #define NONE 0
+
 
 //sharpness flags
 #define SHARP_TIP 		1 // Has a pointy-stabby end, such as a syringe or a knife tip.
@@ -304,6 +294,14 @@ var/MAX_EXPLOSION_RANGE = 14
 #define CHOPWOOD		8 // Kind of an abstract one: The implement is suitable to chop wood with. Essentially a saw or something big enough.
 #define INSULATED_EDGE 	16 // One of the edges of this thing is insulated, even though the rest of it isn't.
 #define HOT_EDGE 		32 // The blade of this thing can produce enough heat to melt through things, even if not sharp.
+
+//clothing flags
+#define MASKINTERNALS		1 // mask allows internals
+#define NOSLIP				2 //prevents from slipping on wet floors, in space etc
+#define BLOCK_GAS_SMOKE_EFFECT 4 //blocks the effect that chemical clouds would have on a mob
+#define ONESIZEFITSALL		8
+#define PLASMAGUARD 		16 //Does not get contaminated by plasma.
+#define BLOCK_BREATHING 	32 //When worn, prevents breathing!
 
 //flags for pass_flags
 #define PASSTABLE	1
@@ -1586,3 +1584,7 @@ var/proccalls = 1
 #define HOLOMAP_MARKER_SYNDISHUTTLE		"syndishuttle"
 
 #define DEFAULT_BLOOD "#A10808"
+
+#define NO_PROCEDURAL_GENERATION		0
+#define SNOW_PROCEDURAL_GENERATION		1
+#define SNOWMINE_PROCEDURAL_GENERATION	2

@@ -67,7 +67,7 @@
 	cant_hold = list("/obj/item/weapon/disk/nuclear")
 	body_parts_covered = FULL_HEAD|BEARD
 	slot_flags = SLOT_BELT | SLOT_HEAD
-	flags = FPRINT | BLOCK_BREATHING | BLOCK_GAS_SMOKE_EFFECT
+	clothing_flags = BLOCK_BREATHING | BLOCK_GAS_SMOKE_EFFECT
 
 /obj/item/weapon/storage/bag/plasticbag/mob_can_equip(mob/M, slot, disable_warning = 0, automatic = 0)
 	//Forbid wearing bags with something inside!
@@ -89,6 +89,11 @@
 /obj/item/weapon/storage/bag/plasticbag/suicide_act(mob/user)
 	user.visible_message("<span class='danger'>[user] puts the [src.name] over \his head and tightens the handles around \his neck! It looks like \he's trying to commit suicide.</span>")
 	return(OXYLOSS)
+
+/obj/item/weapon/storage/bag/plasticbag/baitbag/New()
+	..()
+	for(var/i = 1 to 21)
+		new /obj/item/weapon/reagent_containers/food/snacks/bait(src)
 
 // -----------------------------
 //        Mining Satchel

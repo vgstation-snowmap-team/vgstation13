@@ -407,6 +407,11 @@ var/area/space_area
 	var/area/oldArea = Obj.areaMaster
 	Obj.areaMaster = src
 
+	if(issnow(src))
+		Obj.update_shadow()
+	else if(istype(oldArea) && issnow(oldArea))
+		Obj.underlays -= Obj.shadow
+
 	for(var/mob/mob_in_obj in Obj.contents)
 		CallHook("MobAreaChange", list("mob" = mob_in_obj, "new" = Obj.areaMaster, "old" = oldArea))
 
@@ -484,7 +489,7 @@ var/area/space_area
 		for(var/mob/living/carbon/human/H in A)
 			if(istype(get_turf(H), /turf/space)) //You can't fall on space
 				continue
-			if(istype(H.shoes, /obj/item/clothing/shoes/magboots) && (H.shoes.flags & NOSLIP))
+			if(istype(H.shoes, /obj/item/clothing/shoes/magboots) && (H.shoes.clothing_flags & NOSLIP))
 				continue
 			if(H.locked_to) //Locked to something, anything
 				continue

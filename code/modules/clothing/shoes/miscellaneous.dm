@@ -1,10 +1,19 @@
+/obj/item/clothing/shoes/proc/prevent_snow_slip()
+	return 0
+
+/obj/item/clothing/shoes/proc/prevent_snow_slow()
+	return 0
+
+/obj/item/clothing/shoes/proc/allow_ski()
+	return 0
+
 /obj/item/clothing/shoes/syndigaloshes
 	desc = "A pair of brown shoes. They seem to have extra grip."
 	name = "brown shoes"
 	icon_state = "brown"
 	item_state = "brown"
 	permeability_coefficient = 0.05
-	flags = NOSLIP
+	clothing_flags = NOSLIP
 	origin_tech = Tc_SYNDICATE + "=3"
 	var/list/clothing_choices = list()
 	siemens_coefficient = 0.8
@@ -65,7 +74,7 @@
 	desc = "When you want to turn up the heat."
 	icon_state = "swat"
 	armor = list(melee = 80, bullet = 60, laser = 50,energy = 25, bomb = 50, bio = 10, rad = 0)
-	flags = NOSLIP
+	clothing_flags = NOSLIP
 	species_fit = list(VOX_SHAPED)
 	siemens_coefficient = 0.6
 	heat_conductivity = INS_SHOE_HEAT_CONDUCTIVITY
@@ -76,7 +85,7 @@
 	desc = "When you REALLY want to turn up the heat."
 	icon_state = "swat"
 	armor = list(melee = 80, bullet = 60, laser = 50,energy = 25, bomb = 50, bio = 10, rad = 0)
-	flags = NOSLIP
+	clothing_flags = NOSLIP
 	species_fit = list(VOX_SHAPED)
 	siemens_coefficient = 0.6
 	max_heat_protection_temperature = SHOE_MAX_HEAT_PROTECTION_TEMPERATURE
@@ -109,7 +118,7 @@
 	desc = "Rubber boots"
 	icon_state = "galoshes"
 	permeability_coefficient = 0.05
-	flags = NOSLIP
+	clothing_flags = NOSLIP
 	slowdown = SHOES_SLOWDOWN+1
 	species_fit = list(VOX_SHAPED)
 	heat_conductivity = INS_SHOE_HEAT_CONDUCTIVITY
@@ -145,7 +154,7 @@
 	desc = "Only granted to the most devout followers of Honkmother."
 	icon_state = "superclown"
 	item_state = "superclown"
-	flags = NOSLIP
+	clothing_flags = NOSLIP
 	var/list/sound_list = list(
 		"Clown squeak" = "clownstep",
 		"Bike horn" = 'sound/items/bikehorn.ogg',
@@ -390,4 +399,13 @@
 	icon_state = "workboots"
 	item_state = "workboots"
 	species_fit = list(VOX_SHAPED)
+	footprint_type = /obj/effect/decal/cleanable/blood/tracks/footprints/boots
+
+/obj/item/clothing/shoes/winterboots
+	name = "Winter boots"
+	desc = "Boots lined with 'synthetic' animal fur."
+	icon_state = "winterboots"
+	item_state = "winterboots"
+	species_fit = list(VOX_SHAPED)
+	heat_conductivity = INS_SHOE_HEAT_CONDUCTIVITY
 	footprint_type = /obj/effect/decal/cleanable/blood/tracks/footprints/boots

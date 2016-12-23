@@ -70,7 +70,7 @@
 	//Logs all hrefs
 	if(config && config.log_hrefs && investigations[I_HREFS])
 		var/datum/log_controller/I = investigations[I_HREFS]
-		I.write("<small>[time_stamp()] [src] (usr:[usr])</small> || [hsrc ? "[hsrc] " : ""][href]<br />")
+		I.write("<small>[time_stamp()] [src] (usr:[usr])</small> || [hsrc ? "[hsrc] " : ""][copytext(sanitize(href), 1, 3000)]<br />")
 
 	switch(href_list["_src_"])
 		if("holder")
@@ -218,6 +218,9 @@
 	//This is down here because of the browse() calls in tooltip/New()
 	if(!tooltips)
 		tooltips = new /datum/tooltip(src)
+
+	if(map.base_turf = /turf/snow)
+		snow = new()
 
 	//////////////
 	//DISCONNECT//
