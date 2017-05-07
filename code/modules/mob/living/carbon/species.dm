@@ -52,7 +52,7 @@ var/global/list/whitelisted_species = list("Human")
 	var/breath_type = "oxygen"   // Non-oxygen gas breathed, if any.
 	var/survival_gear = /obj/item/weapon/storage/box/survival // For spawnin'.
 
-	var/cold_level_1 = 260  // Cold damage level 1 below this point.
+	var/cold_level_1 = 220  // Cold damage level 1 below this point.
 	var/cold_level_2 = 200  // Cold damage level 2 below this point.
 	var/cold_level_3 = 120  // Cold damage level 3 below this point.
 
@@ -300,7 +300,7 @@ var/global/list/whitelisted_species = list("Human")
 	primitive = /mob/living/carbon/monkey/unathi
 	darksight = 3
 
-	cold_level_1 = 280 //Default 260 - Lower is better
+	cold_level_1 = 280 //Default 220 - Lower is better
 	cold_level_2 = 220 //Default 200
 	cold_level_3 = 130 //Default 120
 
@@ -407,7 +407,7 @@ var/global/list/whitelisted_species = list("Human")
 	punch_damage = 2 //Claws add 3 damage without gloves, so the total is 5
 	darksight = 8
 
-	cold_level_1 = 200 //Default 260
+	cold_level_1 = 200 //Default 220
 	cold_level_2 = 140 //Default 200
 	cold_level_3 = 80 //Default 120
 
@@ -653,6 +653,12 @@ var/global/list/whitelisted_species = list("Human")
 		if("Cargo Technician","Quartermaster")
 			suit=/obj/item/clothing/suit/space/vox/civ/cargo
 			helm=/obj/item/clothing/head/helmet/space/vox/civ/cargo
+		if("Shaft Miner")
+			suit=/obj/item/clothing/suit/space/vox/civ/mining
+			helm=/obj/item/clothing/head/helmet/space/vox/civ/mining
+		if("Mechanic")
+			suit=/obj/item/clothing/suit/space/vox/civ/mechanic
+			helm=/obj/item/clothing/head/helmet/space/vox/civ/mechanic
 		if("Chaplain")
 			suit=/obj/item/clothing/suit/space/vox/civ/chaplain
 			helm=/obj/item/clothing/head/helmet/space/vox/civ/chaplain
@@ -670,12 +676,15 @@ var/global/list/whitelisted_species = list("Human")
 			suit=/obj/item/clothing/suit/space/vox/civ/engineer/atmos
 			helm=/obj/item/clothing/head/helmet/space/vox/civ/engineer/atmos
 
-		if("Scientist","Roboticist")
+		if("Scientist")
 			suit=/obj/item/clothing/suit/space/vox/civ/science
 			helm=/obj/item/clothing/head/helmet/space/vox/civ/science
 		if("Research Director")
 			suit=/obj/item/clothing/suit/space/vox/civ/science/rd
 			helm=/obj/item/clothing/head/helmet/space/vox/civ/science/rd
+		if("Roboticist")
+			suit=/obj/item/clothing/suit/space/vox/civ/science/roboticist
+			helm=/obj/item/clothing/head/helmet/space/vox/civ/science/roboticist
 
 		if("Medical Doctor")
 			suit=/obj/item/clothing/suit/space/vox/civ/medical
@@ -938,3 +947,19 @@ var/global/list/whitelisted_species = list("Human")
 
 /datum/species/grue/makeName()
 	return "grue"
+
+
+/datum/species/ghoul
+	name = "Ghoul"
+	icobase = 'icons/mob/human_races/r_ghoul.dmi'
+	deform = 'icons/mob/human_races/r_skeleton.dmi' //It's thin leathery skin on top of bone, deformation's just gonna show bone
+
+	flags = NO_PAIN | IS_WHITELISTED | RAD_ABSORB
+	anatomy_flags = HAS_LIPS | HAS_SWEAT_GLANDS
+	has_mutant_race = 0
+
+	burn_mod = 1.2
+	brute_mod = 0.8
+	move_speed_multiplier = 2
+
+	blood_color = "#7FFF00"

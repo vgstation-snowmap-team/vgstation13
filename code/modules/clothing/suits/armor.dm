@@ -34,6 +34,7 @@
 	desc = "The narkotiki camo pattern will come useful for botany raids."
 	icon_state = "nr_vest"
 	item_state = "nr_vest"
+	heat_conductivity = INS_ARMOUR_HEAT_CONDUCTIVITY
 
 /obj/item/clothing/suit/armor/riot
 	name = "Riot Suit"
@@ -77,7 +78,7 @@
 
 /obj/item/clothing/suit/armor/xcomsquaddie
 	name = "Squaddie Armor"
-	desc = "A suit of armor with heavy padding to protect against projectile and laser attacks. Distributed to shadow organization squaddies."
+	desc = "A suit of armor with heavy padding to protect against projectile attacks. Distributed to shadow organization squaddies."
 	icon_state = "xcomarmor2"
 	item_state = "xcomarmor2"
 	body_parts_covered = ARMS|LEGS|FULL_TORSO|FEET|HANDS
